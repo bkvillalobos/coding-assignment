@@ -29,12 +29,33 @@ def purchases_to_dict(data, delimiter='\t'):
 
     return purchase_dict
 
+def calc_purs_not_recommended(rec_df, purchase_dict, row_index=0, in_place=True):
+    """
+    # TODO: document
+    :param rec_df:
+    :param purchase_dict:
+    :param row_index:
+    :param in_place:
+    :return:
+    """
+    customer = rec_df[rc.CID]
+    purchases = purchase_dict[customer]
+    curr_vals = rec_df.ix[row_index].values
+    purchases_recommended = sum([1 if rec in purchases else 0 for rec in curr_vals if isinstance(rec, six.string_types)])
+    total_purchases = len(purchases)
+    result = total_purchases - purchases_recommended
+    if in_place:
+        rec_df.loc[row_index, rc.NOT_RECD] = result
+    else:
+        return result
+
 def pid_to_indicator(rec_df, purchase_dict, row_index=0, in_place=True):
     """
     # TODO: document
     :param rec_df:
     :param purchase_dict:
     :param row_index:
+    :param in_place:
     :return:
     """
     customer = rec_df[rc.CID]
@@ -44,7 +65,7 @@ def pid_to_indicator(rec_df, purchase_dict, row_index=0, in_place=True):
     result = [rec if not isinstance(rec,six.string_types)
               else 1 if rec in purchases
               else 0
-              for rec in purchases if isinstance(rec, six.string_types)]
+              for rec in curr_vals if isinstance(rec, six.string_types)]
     if in_place:
         rec_df.ix[row_index] = result
     else:
