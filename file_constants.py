@@ -20,10 +20,6 @@ class RecFileConstants:
     TOTAL_PUR = 'total_purchased'
     REC_COLUMNS = [ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN]
 
-    def __init__(self, num_recs=10):
-        # limit instance's rec column list to number of recs being considered
-        self.REC_COLUMNS = RecFileConstants.REC_COLUMNS[0:num_recs]
-
 class TestFileConstants:
     """
     #TODO: document
