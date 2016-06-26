@@ -13,6 +13,9 @@ class RecFileConstants():
     EIGHT = '8'
     NINE = '9'
     TEN = '10'
+    NOT_RECD = 'num_purs_not_recommended'
+    REC_COLUMNS = [ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN]
+    TOTAL_PUR = 'total_purchased'
 
 class TestFileConstants():
     CID = 'customer_id'

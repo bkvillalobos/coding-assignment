@@ -71,3 +71,25 @@ def pid_to_indicator(rec_df, purchase_dict, row_index=0, in_place=True):
     else:
         return result
 
+def calc_total_purchases(rec_df, in_palce=True):
+    """
+    #TODO: document
+    :param rec_df:
+    :param in_palce:
+    :return:
+    """
+    purchase_columns = rc.REC_COLUMNS + [rc.NOT_RECD]
+    result = rec_df[purchase_columns].sum(axis=1)
+    if in_palce:
+        rec_df[rc.TOTAL_PUR] = result
+    else:
+        return result
+
+def calc_metric_one(rec_df):
+    """
+    Calculates the proportion of customers who purchased at least one recommendation
+    # TODO: document
+    :param rec_df:
+    :return:
+    """
+
