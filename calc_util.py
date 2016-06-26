@@ -39,11 +39,15 @@ def calc_purs_not_recommended(rec_df, purchase_dict, row_index=0, in_place=True)
     :return:
     """
     customer = rec_df[rc.CID]
-    purchases = purchase_dict[customer]
-    curr_vals = rec_df.ix[row_index].values
-    purchases_recommended = sum([1 if rec in purchases else 0 for rec in curr_vals if isinstance(rec, six.string_types)])
-    total_purchases = len(purchases)
-    result = total_purchases - purchases_recommended
+    if customer in purchase_dict:
+        purchases = purchase_dict[customer]
+        curr_vals = rec_df.ix[row_index].values
+        purchases_recommended = sum([1 if rec in purchases else 0 for rec in curr_vals if isinstance(rec, six.string_types)])
+        total_purchases = len(purchases)
+        result = total_purchases - purchases_recommended
+    else:
+        # if a customer is not in the purchase dictionary, then they have made zero purchases
+        result = 0
     if in_place:
         rec_df.loc[row_index, rc.NOT_RECD] = result
     else:
@@ -96,3 +100,9 @@ def calc_metric_one(rec_df):
     purchased_rec = len(rec_df[rec_df[rc.TOTAL_PUR] > rec_df[rc.NOT_RECD]])
     return purchased_rec/num_customers
 
+def calc_metric_two(rec_df):
+    """
+    #TODO: document
+    :param rec_df:
+    :return:
+    """
