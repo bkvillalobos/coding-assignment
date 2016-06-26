@@ -92,4 +92,7 @@ def calc_metric_one(rec_df):
     :param rec_df:
     :return:
     """
+    num_customers = len(rec_df[rc.CID].unique())
+    purchased_rec = len(rec_df[rec_df[rc.TOTAL_PUR] > rec_df[rc.NOT_RECD]])
+    return purchased_rec/num_customers
 
