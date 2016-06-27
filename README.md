@@ -59,6 +59,7 @@ Files & Directories:
   5. coding_test_data - directory where both the full and subset data sets are stored
   6. full_output.txt - output when process is run on the full data set
   7. target - directory where timestamped files are saved, containing the processed dataframe from that run if --save is True
+
 ## Next Steps:
 With more time, I would have liked to implement the following things, in order:
   1. Create testing suite with unit tests for every function, especially those that calculate the metrics
