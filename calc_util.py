@@ -97,5 +97,17 @@ def calc_metric_two(rec_df, num_recs):
     purchased_recs = sum(rec_df[rc.TOTAL_PUR]) - sum(rec_df[rc.NOT_RECD])
     return purchased_recs / num_recs
 
+def calc_metric_three(rec_df, num_recs):
+    """
+    Calculates recall (number of purchased recommendations / number of purchases)
+    #TODO: document
+    :param rec_df:
+    :param num_recs:
+    :return:
+    """
+    total_purchased = sum(rec_df[rc.TOTAL_PUR])
+     # number of recommended purchases = total purchases - number of purchases not recommended
+    purchased_recs = total_purchased - sum(rec_df[rc.NOT_RECD])
+    return purchased_recs/total_purchased
 
 
