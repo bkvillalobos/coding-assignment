@@ -86,10 +86,16 @@ def calc_metric_one(rec_df):
     purchased_rec = len(rec_df[rec_df[rc.TOTAL_PUR] > rec_df[rc.NOT_RECD]])
     return purchased_rec/num_customers
 
-def calc_metric_two(rec_df):
+def calc_metric_two(rec_df, num_recs):
     """
     Calculates precision (number of purchased recommendations / number of given recommendations)
     #TODO: document
     :param rec_df:
     :return:
     """
+    # number of recommended purchases = total purchases - number of purchases not recommended
+    purchased_recs = sum(rec_df[rc.TOTAL_PUR]) - sum(rec_df[rc.NOT_RECD])
+    return purchased_recs / num_recs
+
+
+
