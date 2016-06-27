@@ -1,7 +1,7 @@
 # coding-assignment
 
 ## Approach
-This solution was designed to be modular, reusable, and tolarant of changes to the input data sets. `metric_calculator` is implemented such that it can be imported and integrated into a production system as-is. I started with an exploratory ipython notebook session (exploratory.ipynb) and designed the algorithm and architechture based on what I discovered there.
+This solution was designed to be modular, reusable, and tolerant of changes to the input data sets. `metric_calculator` is implemented such that it can be imported and integrated into a production system as-is. I started with an exploratory ipython notebook session (exploratory.ipynb) and designed the algorithm and architechture based on what I discovered there.
 
 Assumes installation of pandas and numpy.
 
@@ -68,7 +68,7 @@ With more time, I would have liked to implement the following things, in order:
   2. Optimize creation of purchase dictionary with more complicated sorting and indexing logic, to avoid repeated subsetting of the dataframe.
   3. Optimize the dataframe transformation process similiarly.
   4. Parallelize both of these processes. Since they are designed to operate independently on an individual row of the dataframe, there's no reason why it can't be implemented with chunking and multithreading.
-  5. 
+  
   
 ## Results on Full Dataset:
 ![alt text](results.png "Output File")
