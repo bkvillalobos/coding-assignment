@@ -84,8 +84,8 @@ def calc_metric_one(rec_df):
     :return:
     """
     num_customers = len(rec_df[rc.CID].unique())
-    purchased_rec = len(rec_df[rec_df[rc.TOTAL_PUR] > rec_df[rc.NOT_RECD]])
-    return purchased_rec/num_customers
+    who_purchased_rec = len(rec_df[rec_df[rc.TOTAL_PUR] > rec_df[rc.NOT_RECD]])
+    return float(who_purchased_rec) / num_customers
 
 def calc_metric_two(rec_df, num_recs):
     """
@@ -95,8 +95,9 @@ def calc_metric_two(rec_df, num_recs):
     :return:
     """
     # number of recommended purchases = total purchases - number of purchases not recommended
+    num_customers = len(rec_df[rc.CID].unique())
     purchased_recs = sum(rec_df[rc.TOTAL_PUR]) - sum(rec_df[rc.NOT_RECD])
-    return purchased_recs / num_recs
+    return float(purchased_recs) / (num_recs*num_customers)
 
 def calc_metric_three(rec_df, num_recs):
     """
@@ -109,6 +110,6 @@ def calc_metric_three(rec_df, num_recs):
     total_purchased = sum(rec_df[rc.TOTAL_PUR])
      # number of recommended purchases = total purchases - number of purchases not recommended
     purchased_recs = total_purchased - sum(rec_df[rc.NOT_RECD])
-    return purchased_recs/total_purchased
+    return float(purchased_recs) / total_purchased
 
 
