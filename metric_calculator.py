@@ -1,5 +1,5 @@
 __author__ = 'brendonvillalobos'
-from file_constants import RecFileConstants as rc, TestFileConstants as tc
+from file_constants import RecFileConstants as rc, TestFileConstants as tc, OutFileConstants as oc
 import calc_util as calc
 import pandas as pd
 import numpy as np
@@ -15,6 +15,7 @@ class MetricCalculator():
     full_test_filepath = '{base}/test.txt'.format(base=data_folder)
     subset_rec_filepath = '{base}/rec_subset.tsv'.format(base=data_folder)
     subset_test_filepath = '{base}/bought_subset.tsv'.format(base=data_folder)
+    MAX_RECS = len(rc.REC_COLUMNS)
 
     def __init__(self, rec_path=full_rec_filepath, test_path=full_test_filepath, run_on_subset=False):
         """
@@ -71,11 +72,21 @@ class MetricCalculator():
             save_path = '{base}/transformed_df_{dt}.tsv'.format(base=self.out_folder, dt=dt)
             rec_df.to_csv(save_path, sep=delimiter, index=False)
 
-        # calculate the results of each metric for this number of recommendations
-        print self.num_recs
-        print calc.calc_metric_one(rec_df)
-        print calc.calc_metric_two(rec_df, self.num_recs)
-        print calc.calc_metric_three(rec_df, self.num_recs)
+        out_list =[]
+        for this_num_recs in reversed(xrange(1, self.MAX_RECS + 1)):
+            # calculate the results of each metric for each number of recommendations
+            metric_one =  calc.calc_metric_one(rec_df)
+            metric_two = calc.calc_metric_two(rec_df, self.num_recs)
+            metric_three = calc.calc_metric_three(rec_df, self.num_recs)
+            out_list = [[self.num_recs, metric_one, metric_two, metric_three]] + out_list
+            # drops the next least confident recommendation
+            rec_df.drop(self.REC_COLUMNS[-1], axis=1, inplace=True)
+            self._set_recs(num_recs=this_num_recs - 1)
+            # recalculate the total number of purchases each customer made under more restrictive recommendation set
+            self.calc_total_purchases(rec_df)
+        out_df = pd.DataFrame(data=out_list, columns=(oc.NUM_RECS,oc.METRIC_ONE,oc.METRIC_TWO,oc.METRIC_THREE))
+        out_df.to_csv('out.tsv', sep=delimiter, index=False)
+        print out_df
 
 
     def calc_total_purchases(self, rec_df, in_palce=True):

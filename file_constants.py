@@ -26,3 +26,12 @@ class TestFileConstants:
     """
     CID = 'customer_id'
     PID = 'product_id'
+
+class OutFileConstants:
+    """
+    #TODO: document
+    """
+    NUM_RECS = 'num_recs'
+    METRIC_ONE = 'metric_one'
+    METRIC_TWO = 'metric_two'
+    METRIC_THREE = 'metric_three'
