@@ -3,6 +3,8 @@
 ## Approach
 This solution was designed to be modular, reusable, and tolarant of changes to the input data sets. `metric_calculator` is implemented such that it can be imported and integrated into a production system as-is. I started with an exploratory ipython notebook session (exploratory.ipynb) and designed the algorithm and architechture based on what I discovered there.
 
+Assumes instalation of pandas and numpy.
+
 ## How to Run It:
 To run the process end-to-end on the dataset provided, simply execute the runner script that instantiates and runs metric_calculator:
   ```
@@ -65,3 +67,4 @@ With more time, I would have liked to implement the following things, in order:
   1. Create testing suite with unit tests for every function, especially those that calculate the metrics
   2. Optimize creation of purchase dictionary with more complicated sorting and indexing logic, to avoid repeated subsetting of the dataframe.
   3. Optimize the dataframe transformation process similiarly.
+  4. Parallelize both of these processes. Since they are designed to operate independently on an individual row of the dataframe, there's no reason why it can't be implemented with chunking and multithreading.
