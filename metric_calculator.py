@@ -65,25 +65,11 @@ class MetricCalculator():
         self.calc_total_purchases(rec_df)
 
         if save_transformed_df:
-            # saves dataframe after transformations have been applied to it, as it will be used to calculat metrics
-            curr_time = datetime.now()
-            date_format='%Y%m%d_%H_%M_%S'
-            dt = curr_time.strftime(date_format)
-            save_path = '{base}/transformed_df_{dt}.tsv'.format(base=self.out_folder, dt=dt)
-            rec_df.to_csv(save_path, sep=delimiter, index=False)
-
+            # saves dataframe after transformations have been applied to it, as it will be used to calculate metrics
+            self._save_intermediate_df(rec_df)
         out_list =[]
         for this_num_recs in reversed(xrange(1, self.MAX_RECS + 1)):
-            # calculate the results of each metric for each number of recommendations
-            metric_one =  calc.calc_metric_one(rec_df)
-            metric_two = calc.calc_metric_two(rec_df, self.num_recs)
-            metric_three = calc.calc_metric_three(rec_df, self.num_recs)
-            out_list = [[self.num_recs, metric_one, metric_two, metric_three]] + out_list
-            # drops the next least confident recommendation
-            rec_df.drop(self.REC_COLUMNS[-1], axis=1, inplace=True)
-            self._set_recs(num_recs=this_num_recs - 1)
-            # recalculate the total number of purchases each customer made under more restrictive recommendation set
-            self.calc_total_purchases(rec_df)
+            out_list = [self._recalculate_metrics(rec_df, this_num_recs)] + out_list
         out_df = pd.DataFrame(data=out_list, columns=(oc.NUM_RECS,oc.METRIC_ONE,oc.METRIC_TWO,oc.METRIC_THREE))
         out_df.to_csv('out.tsv', sep=delimiter, index=False)
         print out_df
@@ -104,6 +90,40 @@ class MetricCalculator():
             return result
 
     def _set_recs(self, num_recs=10):
+        """
+        #TODO: document
+        :param num_recs:
+        :return:
+        """
         self.num_recs = num_recs
         # limit instance's rec column list to number of recs being considered
         self.REC_COLUMNS = rc.REC_COLUMNS[0:num_recs]
+
+    def _recalculate_metrics(self,rec_df, this_num_recs):
+        """
+        Calculate the results of each metric for this number of recommendations
+        :param rec_df: recommendations dataframe
+        :param this_num_recs: number of recommendations to be included in this recalculation
+        :return: list of output values: this number of recommendations, metric one, metric two, and metric three
+        """
+        metric_one =  calc.calc_metric_one(rec_df)
+        metric_two = calc.calc_metric_two(rec_df, self.num_recs)
+        metric_three = calc.calc_metric_three(rec_df, self.num_recs)
+        # drop the next least confident recommendation
+        rec_df.drop(self.REC_COLUMNS[-1], axis=1, inplace=True)
+        self._set_recs(num_recs=this_num_recs - 1)
+        # recalculate the total number of purchases each customer made under more restrictive recommendation set
+        self.calc_total_purchases(rec_df)
+        return [self.num_recs + 1, metric_one, metric_two, metric_three]
+
+    def _save_intermediate_df(self,rec_df):
+        """
+        Wrapper method for saving dataframe used for metric calculations
+        :param rec_df: dataframe to be saved
+        :return:
+        """
+        curr_time = datetime.now()
+        date_format='%Y%m%d_%H_%M_%S'
+        dt = curr_time.strftime(date_format)
+        save_path = '{base}/transformed_df_{dt}.tsv'.format(base=self.out_folder, dt=dt)
+        rec_df.to_csv(save_path, sep=self.delimiter, index=False)

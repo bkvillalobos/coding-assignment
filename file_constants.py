@@ -33,5 +33,5 @@ class OutFileConstants:
     """
     NUM_RECS = 'num_recs'
     METRIC_ONE = 'metric_one'
-    METRIC_TWO = 'metric_two'
-    METRIC_THREE = 'metric_three'
+    METRIC_TWO = 'precision'
+    METRIC_THREE = 'recall'
