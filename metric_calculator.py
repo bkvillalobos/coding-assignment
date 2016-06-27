@@ -68,7 +68,7 @@ class MetricCalculator():
             curr_time = datetime.now()
             date_format='%Y%m%d_%H_%M_%S'
             dt = curr_time.strftime(date_format)
-            save_path = '{base}/transformed_df_{dt}'.format(base=self.out_folder, dt=dt)
+            save_path = '{base}/transformed_df_{dt}.tsv'.format(base=self.out_folder, dt=dt)
             rec_df.to_csv(save_path, sep=delimiter, index=False)
 
         # calculate the results of each metric for this number of recommendations
