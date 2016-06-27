@@ -3,14 +3,14 @@
 ## Approach
 This solution was designed to be modular, reusable, and tolarant of changes to the input data sets. `metric_calculator` is implemented such that it can be imported and integrated into a production system as-is. I started with an exploratory ipython notebook session (exploratory.ipynb) and designed the algorithm and architechture based on what I discovered there.
 
-Assumes instalation of pandas and numpy.
+Assumes installation of pandas and numpy.
 
 ## How to Run It:
 To run the process end-to-end on the dataset provided, simply execute the runner script that instantiates and runs metric_calculator:
   ```
   python runner.py
   ```
-In order to run the process on a smaller subset of the full dataset (20 customers) pass `True` to the flag `-rs`, and in order to save the processed dataframe used to calculate the output, pass `True` to the flag `s`, as follows:
+In order to run the process on a smaller subset of the full dataset (20 customers) pass `True` to the flag `-rs`, and in order to save the processed dataframe used to calculate the output, pass `True` to the flag `-s`, as follows:
   ```
   python runner.py -rs True -s True
   ```
