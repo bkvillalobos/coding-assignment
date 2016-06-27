@@ -3,4 +3,4 @@ from metric_calculator import MetricCalculator
 
 if __name__ == '__main__':
     mc = MetricCalculator(run_on_subset=True)
-    mc.run()
+    mc.run(save_transformed_df=True)

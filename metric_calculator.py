@@ -3,12 +3,14 @@ from file_constants import RecFileConstants as rc, TestFileConstants as tc
 import calc_util as calc
 import pandas as pd
 import numpy as np
+from datetime import datetime
 
 class MetricCalculator():
     """
     TODO: document
     """
     data_folder = 'coding_test_data'
+    out_folder = 'target'
     full_rec_filepath = '{base}/recs.txt'.format(base=data_folder)
     full_test_filepath = '{base}/test.txt'.format(base=data_folder)
     subset_rec_filepath = '{base}/rec_subset.tsv'.format(base=data_folder)
@@ -29,7 +31,7 @@ class MetricCalculator():
             self.test_filepath = MetricCalculator.subset_test_filepath
 
 
-    def run(self, rec_df=None, pur_df=None, delimiter='\t'):
+    def run(self, rec_df=None, pur_df=None, delimiter='\t', save_transformed_df=False):
         """
         #TODO: document
         :param rec_df:
@@ -60,6 +62,14 @@ class MetricCalculator():
 
         # calculate the total number of purchases each customer made
         self.calc_total_purchases(rec_df)
+
+        if save_transformed_df:
+            # saves dataframe after transformations have been applied to it, as it will be used to calculat metrics
+            curr_time = datetime.now()
+            date_format='%Y%m%d_%H_%M_%S'
+            dt = curr_time.strftime(date_format)
+            save_path = '{base}/transformed_df_{dt}'.format(base=self.out_folder, dt=dt)
+            rec_df.to_csv(save_path, sep=delimiter, index=False)
 
         # calculate the results of each metric for this number of recommendations
         print self.num_recs
