@@ -20,7 +20,8 @@ def purchases_to_dict(data, delimiter='\t'):
         data = pd.read_csv(data, sep=delimiter)
 
     # list of unique customer ids
-    unique_customers = data[tc.CID].unique().sort_values()
+    unique_customers = data[tc.CID].unique()
+    unique_customers.sort()
     purchase_dict = {}
 
     # create dictionary entry of purchases for every customer
@@ -38,7 +39,7 @@ def calc_purs_not_recommended(rec_df, purchase_dict, row_index=0, in_place=True)
     :param in_place:
     :return:
     """
-    customer = rec_df[rc.CID]
+    customer = rec_df.loc[row_index,rc.CID]
     if customer in purchase_dict:
         purchases = purchase_dict[customer]
         curr_vals = rec_df.ix[row_index].values
@@ -62,14 +63,14 @@ def pid_to_indicator(rec_df, purchase_dict, row_index=0, in_place=True):
     :param in_place:
     :return:
     """
-    customer = rec_df[rc.CID]
+    customer = rec_df.loc[row_index, rc.CID]
     purchases = purchase_dict[customer]
     curr_vals = rec_df.ix[row_index].values
     # turns all recommendation ids into purchase indicator, leaves all other  (non-string) df values alone
     result = [rec if not isinstance(rec,six.string_types)
               else 1 if rec in purchases
               else 0
-              for rec in curr_vals if isinstance(rec, six.string_types)]
+              for rec in curr_vals]
     if in_place:
         rec_df.ix[row_index] = result
     else:

@@ -29,7 +29,7 @@ class MetricCalculator():
             self.test_filepath = MetricCalculator.subset_test_filepath
 
 
-    def run(self, rec_df=None, pur_df=None):
+    def run(self, rec_df=None, pur_df=None, delimiter='\t'):
         """
         #TODO: document
         :param rec_df:
@@ -37,9 +37,9 @@ class MetricCalculator():
         :return:
         """
         if not rec_df:
-            rec_df = pd.read_csv(self.rec_filepath)
+            rec_df = pd.read_csv(self.rec_filepath, sep=delimiter)
         if not pur_df:
-            pur_df = pd.read_csv(self.test_filepath)
+            pur_df = pd.read_csv(self.test_filepath, sep=delimiter)
 
         # create dictionary of every purchase each customer has made
         pur_dict = calc.purchases_to_dict(pur_df)
