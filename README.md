@@ -67,7 +67,8 @@ With more time, I would have liked to implement the following things, in order:
   1. Create testing suite with unit tests for every function, especially those that calculate the metrics
   2. Optimize creation of purchase dictionary with more complicated sorting and indexing logic, to avoid repeated subsetting of the dataframe.
   3. Optimize the dataframe transformation process similiarly.
-  4. Parallelize both of these processes. Since they are designed to operate independently on an individual row of the dataframe, there's no reason why it can't be implemented with chunking and multithreading.
+  4. Cythonize calc_util.py, so that the translation into C code speeds up the execution process.
+  5. Parallelize both of these processes. Since they are designed to operate independently on an individual row of the dataframe, there's no reason why it can't be implemented with chunking and multithreading.
   
   
 ## Results on Full Dataset:
