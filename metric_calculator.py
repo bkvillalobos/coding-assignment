@@ -30,6 +30,9 @@ class MetricCalculator():
         if run_on_subset:
             self.rec_filepath = MetricCalculator.subset_rec_filepath
             self.test_filepath = MetricCalculator.subset_test_filepath
+        else:
+            self.rec_filepath = rec_path
+            self.test_filepath = test_path
 
 
     def run(self, rec_df=None, pur_df=None, delimiter='\t', save_transformed_df=False):
@@ -45,6 +48,7 @@ class MetricCalculator():
             pur_df = pd.read_csv(self.test_filepath, sep=delimiter)
 
         # create dictionary of every purchase each customer has made
+        print 'creating dictionary of every purchase each customer has made...'
         pur_dict = calc.purchases_to_dict(pur_df)
         del pur_df
 
@@ -54,6 +58,7 @@ class MetricCalculator():
 
         # iterate through rows of recommendations dataframe
         # can be done as an apply function, but a for loop is much less expensive computationally
+        print 'transforming product id codes into indicator values and calculating non-rec purchases...'
         for ix in rec_df.index:
             # calculate the number of purchases that weren't recommended for this customer
             calc.calc_purs_not_recommended(rec_df=rec_df, purchase_dict=pur_dict, row_index=ix)
@@ -66,9 +71,11 @@ class MetricCalculator():
 
         if save_transformed_df:
             # saves dataframe after transformations have been applied to it, as it will be used to calculate metrics
+            print 'saving transformed dataframe...'
             self._save_intermediate_df(rec_df)
         out_list =[]
         for this_num_recs in reversed(xrange(1, self.MAX_RECS + 1)):
+            print 'calculating output for {0} number of recommendations...'.format(this_num_recs)
             out_list = [self._recalculate_metrics(rec_df, this_num_recs)] + out_list
         out_df = pd.DataFrame(data=out_list, columns=(oc.NUM_RECS,oc.METRIC_ONE,oc.METRIC_TWO,oc.METRIC_THREE))
         out_df.to_csv('out.tsv', sep=delimiter, index=False)
@@ -114,7 +121,7 @@ class MetricCalculator():
         self._set_recs(num_recs=this_num_recs - 1)
         # recalculate the total number of purchases each customer made under more restrictive recommendation set
         self.calc_total_purchases(rec_df)
-        return [self.num_recs + 1, metric_one, metric_two, metric_three]
+        return [this_num_recs, metric_one, metric_two, metric_three]
 
     def _save_intermediate_df(self,rec_df):
         """
