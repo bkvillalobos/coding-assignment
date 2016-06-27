@@ -52,7 +52,7 @@ The resulting dataframe can be saved if the `-s True` flag is passed to runner.p
 #### Metric calculation
 Finally, the metric calcualtions are executed iteratively for each number of recommendations, from 10-1. At each iteration, the `num_recs` variable is decremented, and the corresponding column is dropped from the transformed dataframe. The total purchases column is updated accordingly, and the metrics are calculated again at this level of recommendations.
 
-## Product Organization
+## Project Organization
 Files & Directories:
   1. runner.py Script that instantiates and runs metric_calculator.MetricCalculator object
   2. metric_calculator.py - heart of the module, imports the other files functions and classes and orchestrates/executes process
