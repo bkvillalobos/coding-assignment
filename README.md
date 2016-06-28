@@ -31,7 +31,7 @@ Example:
 ```
 #### Transformation on the recommendation data frame
 
-This process is designed to only iterate through the recommendations file once, and performs all of it's calculations in the same iteration. While this can be implemented as an apply function - and the subprocess functions are written such that you can use them in an apply function - that drasticly increases the computational cost.  On each iteration / row of the recommendations dataframe, it:
+This process is designed to only iterate through the recommendations file once, and performs all of its calculations in the same iteration. While this can be implemented as an apply function - and the subprocess functions are written such that you can use them in an apply function - that drasticly increases the computational cost.  On each iteration / row of the recommendations dataframe, it:
   1. calculates the number of purchases made by this customer that weren't recommended
   2. replaces the product id in each recomendation column with an indicator variable, denoting whether or not the customer bought the recommended item
 
@@ -50,7 +50,7 @@ So this...
 The resulting dataframe can be saved if the `-s True` flag is passed to runner.py
 
 #### Metric calculation
-Finally, the metric calcualtions are executed iteratively for each number of recommendations, from 10-1. At each iteration, the `num_recs` variable is decremented, and the corresponding column is dropped from the transformed dataframe. The total purchases column is updated accordingly, and the metrics are calculated again at this level of recommendations.
+Finally, the metric calculations are executed iteratively for each number of recommendations, from 10-1. At each iteration, the `num_recs` variable is decremented, and the corresponding column is dropped from the transformed dataframe. The total purchases column is updated accordingly, and the metrics are calculated again at this level of recommendations.
 
 ## Project Organization
 Files & Directories:
